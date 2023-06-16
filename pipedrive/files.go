@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -136,7 +136,7 @@ func (s *FilesService) Upload(ctx context.Context, fileName string, filePath str
 
 	defer file.Close()
 
-	fileContents, err := ioutil.ReadAll(file)
+	fileContents, err := io.ReadAll(file)
 
 	if err != nil {
 		return nil, nil, err

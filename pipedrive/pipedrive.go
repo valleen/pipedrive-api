@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -77,6 +76,7 @@ type Client struct {
 	DealFields        *DealFieldsService
 	Persons           *PersonsService
 	Organizations     *OrganizationsService
+	EmailTemplates    *EmailTemplateService
 }
 
 type service struct {
@@ -172,7 +172,7 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request) *RateLimitError {
 			StatusCode: http.StatusForbidden,
 			Request:    req,
 			Header:     make(http.Header, 0),
-			Body:       ioutil.NopCloser(bytes.NewBufferString("")),
+			Body:       io.NopCloser(bytes.NewBufferString("")),
 		}
 
 		return &RateLimitError{
@@ -190,7 +190,7 @@ func (c *Client) checkResponse(r *http.Response) error {
 		return nil
 	}
 
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	errorResponse := &ErrorResponse{Response: r}
 
 	if err == nil && data != nil {
@@ -233,7 +233,7 @@ func (c *Client) Do(ctx context.Context, request *http.Request, v interface{}) (
 	}
 
 	defer func() {
-		io.CopyN(ioutil.Discard, resp.Body, 512)
+		io.CopyN(io.Discard, resp.Body, 512)
 		resp.Body.Close()
 	}()
 
@@ -338,6 +338,7 @@ func NewClient(options *Config) *Client {
 	c.DealFields = (*DealFieldsService)(&c.common)
 	c.Persons = (*PersonsService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
+	c.EmailTemplates = (*EmailTemplateService)(&c.common)
 
 	return c
 }
