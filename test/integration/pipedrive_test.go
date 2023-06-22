@@ -43,8 +43,8 @@ func RandomString(n int) string {
 }
 
 func init() {
-	token := os.Getenv("PIPEDRIVE_API_TOKEN")
-
+	// token := os.Getenv("PIPEDRIVE_API_TOKEN")
+	token := "8aaf313c5f97b05a1a5eb529997e5804f2419025"
 	if token == "" {
 		print("No API key found. Integration tests won't run!\n\n")
 		os.Exit(1)

@@ -347,3 +347,21 @@ func (s *PersonsService) Get(ctx context.Context, personID int) (*PersonResponse
 
 	return record, resp, nil
 }
+
+// List a person's emails.
+//
+// Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/Persons#getPersonMailMessages
+func (s *PersonsService) ListMailMessages(ctx context.Context, personID int, startIndex int) (*MailMessageResponse, *Response, error) {
+	req, err := s.client.NewRequest(http.MethodGet, fmt.Sprintf("/persons/%d/mailMessages", personID), nil, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var record *MailMessageResponse
+	resp, err := s.client.Do(ctx, req, &record)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return record, resp, nil
+}
