@@ -76,7 +76,8 @@ type Client struct {
 	DealFields        *DealFieldsService
 	Persons           *PersonsService
 	Organizations     *OrganizationsService
-	EmailTemplates    *EmailTemplateService
+	MailTemplates     *MailTemplateService
+	MailAttachments   *MailAttachmentService
 }
 
 type service struct {
@@ -338,7 +339,8 @@ func NewClient(options *Config) *Client {
 	c.DealFields = (*DealFieldsService)(&c.common)
 	c.Persons = (*PersonsService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
-	c.EmailTemplates = (*EmailTemplateService)(&c.common)
+	c.MailTemplates = (*MailTemplateService)(&c.common)
+	c.MailAttachments = (*MailAttachmentService)(&c.common)
 
 	return c
 }

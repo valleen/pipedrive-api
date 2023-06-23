@@ -14,26 +14,37 @@ type UsersService service
 
 // User represents a Pipedrive user.
 type User struct {
-	ID                  int    `json:"id"`
-	Name                string `json:"name"`
-	DefaultCurrency     string `json:"default_currency"`
-	Locale              string `json:"locale"`
-	Lang                int    `json:"lang"`
-	Email               string `json:"email"`
-	Phone               string `json:"phone"`
-	Activated           bool   `json:"activated"`
-	LastLogin           string `json:"last_login"`
-	Created             string `json:"created"`
-	Modified            string `json:"modified"`
-	SignupFlowVariation string `json:"signup_flow_variation"`
-	HasCreatedCompany   bool   `json:"has_created_company"`
-	IsAdmin             int    `json:"is_admin"`
-	TimezoneName        string `json:"timezone_name"`
-	TimezoneOffset      string `json:"timezone_offset"`
-	ActiveFlag          bool   `json:"active_flag"`
-	RoleID              int    `json:"role_id"`
-	IconURL             string `json:"icon_url"`
-	IsYou               bool   `json:"is_you"`
+	ID                int    `json:"id"`
+	Name              string `json:"name"`
+	Email             string `json:"email"`
+	Lang              int    `json:"lang"`
+	Locale            string `json:"locale"`
+	TimezoneName      string `json:"timezone_name"`
+	TimezoneOffset    string `json:"timezone_offset"`
+	DefaultCurrency   string `json:"default_currency"`
+	IconURL           any    `json:"icon_url"`
+	ActiveFlag        bool   `json:"active_flag"`
+	IsAdmin           int    `json:"is_admin"`
+	RoleID            int    `json:"role_id"`
+	Created           string `json:"created"`
+	HasCreatedCompany bool   `json:"has_created_company"`
+	IsYou             bool   `json:"is_you"`
+	Access            []struct {
+		App             string `json:"app"`
+		Admin           bool   `json:"admin"`
+		PermissionSetID string `json:"permission_set_id"`
+	} `json:"access"`
+	Phone          string `json:"phone"`
+	LastLogin      string `json:"last_login"`
+	Modified       string `json:"modified"`
+	CompanyID      int    `json:"company_id"`
+	CompanyName    string `json:"company_name"`
+	CompanyDomain  string `json:"company_domain"`
+	CompanyCountry string `json:"company_country"`
+	Language       struct {
+		LanguageCode string `json:"language_code"`
+		CountryCode  string `json:"country_code"`
+	} `json:"language"`
 }
 
 func (u User) String() string {

@@ -7,14 +7,14 @@ import (
 	"time"
 )
 
-// DealService handles mailbox related
+// MailTemplateService handles mail templates related
 // methods of the Pipedrive API.
 //
 // Pipedrive API dcos: https://developers.pipedrive.com/docs/api/v1/Mailbox
-type EmailTemplateService service
+type MailTemplateService service
 
-// EmailTemplate represents a Pipedrive email template.
-type EmailTemplate struct {
+// MailTemplate represents a Pipedrive email template.
+type MailTemplate struct {
 	ID                int       `json:"id"`
 	Name              string    `json:"name"`
 	Content           string    `json:"content"`
@@ -28,23 +28,23 @@ type EmailTemplate struct {
 	DefaultTemplateID string    `json:"default_template_id"`
 }
 
-func (d EmailTemplate) String() string {
+func (d MailTemplate) String() string {
 	return Stringify(d)
 }
 
-// EmailTemplatesResponse represents multiple deals response.
-type EmailTemplatesResponse struct {
-	Success bool            `json:"success,omitempty"`
-	Data    []EmailTemplate `json:"data,omitempty"`
+// MailTemplatesResponse represents multiple deals response.
+type MailTemplatesResponse struct {
+	Success bool           `json:"success,omitempty"`
+	Data    []MailTemplate `json:"data,omitempty"`
 }
 
-// EmailTemplateResponse represents single deal response.
-type EmailTemplateResponse struct {
-	Success bool          `json:"success,omitempty"`
-	Data    EmailTemplate `json:"data,omitempty"`
+// MailTemplateResponse represents single deal response.
+type MailTemplateResponse struct {
+	Success bool         `json:"success,omitempty"`
+	Data    MailTemplate `json:"data,omitempty"`
 }
 
-type EmailTemplateFilterOptions struct {
+type MailTemplateFilterOptions struct {
 	Language   string `url:"language"`
 	StrictMode string `url:"strict_mode"`
 }
@@ -52,8 +52,8 @@ type EmailTemplateFilterOptions struct {
 // Get a email template.
 //
 // Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Persons/get_persons_id
-func (s *EmailTemplateService) Get(ctx context.Context, emailTemplateID int, language string) (*EmailTemplateResponse, *Response, error) {
-	req, err := s.client.NewRequest(http.MethodGet, fmt.Sprintf("/mailbox/mailTemplates/%d", emailTemplateID), &EmailTemplateFilterOptions{
+func (s *MailTemplateService) Get(ctx context.Context, emailTemplateID int, language string) (*MailTemplateResponse, *Response, error) {
+	req, err := s.client.NewRequest(http.MethodGet, fmt.Sprintf("/mailbox/mailTemplates/%d/content", emailTemplateID), &MailTemplateFilterOptions{
 		Language:   language,
 		StrictMode: "true",
 	}, nil)
@@ -61,7 +61,7 @@ func (s *EmailTemplateService) Get(ctx context.Context, emailTemplateID int, lan
 		return nil, nil, err
 	}
 
-	var record *EmailTemplateResponse
+	var record *MailTemplateResponse
 
 	resp, err := s.client.Do(ctx, req, &record)
 	if err != nil {
@@ -74,13 +74,13 @@ func (s *EmailTemplateService) Get(ctx context.Context, emailTemplateID int, lan
 // List email templates.
 //
 // Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Deals/get_deals
-func (s *EmailTemplateService) List(ctx context.Context) (*EmailTemplatesResponse, *Response, error) {
+func (s *MailTemplateService) List(ctx context.Context) (*MailTemplatesResponse, *Response, error) {
 	req, err := s.client.NewRequest(http.MethodGet, "/mailbox/mailTemplates", nil, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var record *EmailTemplatesResponse
+	var record *MailTemplatesResponse
 
 	resp, err := s.client.Do(ctx, req, &record)
 
@@ -91,9 +91,9 @@ func (s *EmailTemplateService) List(ctx context.Context) (*EmailTemplatesRespons
 	return record, resp, nil
 }
 
-// EmailTemplateCreateOptions specifices the optional parameters to the
+// MailTemplateCreateOptions specifices the optional parameters to the
 // MailboxService.Create method.
-type EmailTemplateCreateOptions struct {
+type MailTemplateCreateOptions struct {
 	Title               string    `json:"title"`
 	Value               string    `json:"value"`
 	Currency            string    `json:"currency"`
@@ -115,7 +115,7 @@ type EmailTemplateCreateOptions struct {
 // Create a new email template.
 //
 // Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Deals/post_deals
-func (s *EmailTemplateService) Create(ctx context.Context, opt *EmailTemplateCreateOptions) (*EmailTemplateResponse, *Response, error) {
+func (s *MailTemplateService) Create(ctx context.Context, opt *MailTemplateCreateOptions) (*MailTemplateResponse, *Response, error) {
 	req, err := s.client.NewRequest(http.MethodPost, "/deals", nil, struct {
 		Title               string    `json:"title"`
 		Value               string    `json:"value"`
@@ -156,7 +156,7 @@ func (s *EmailTemplateService) Create(ctx context.Context, opt *EmailTemplateCre
 		return nil, nil, err
 	}
 
-	var record *EmailTemplateResponse
+	var record *MailTemplateResponse
 
 	resp, err := s.client.Do(ctx, req, &record)
 

@@ -10,7 +10,7 @@ import (
 )
 
 func TestEmailTemplatesService_List(t *testing.T) {
-	result, _, err := client.EmailTemplates.List(context.Background())
+	result, _, err := client.MailTemplates.List(context.Background())
 	if err != nil {
 		t.Errorf("Could not get email templates: %v", err)
 	}
@@ -19,7 +19,7 @@ func TestEmailTemplatesService_List(t *testing.T) {
 		t.Error("Unsuccessful email templates request")
 	}
 
-	expectedCurrency := pipedrive.EmailTemplate{
+	expectedCurrency := pipedrive.MailTemplate{
 		ID:                1,
 		Name:              "Follow up",
 		Content:           "",
@@ -39,7 +39,7 @@ func TestEmailTemplatesService_List(t *testing.T) {
 }
 
 func TestEmailTemplatesService_Get(t *testing.T) {
-	result, _, err := client.EmailTemplates.Get(context.Background(), 6, "fr")
+	result, _, err := client.MailTemplates.Get(context.Background(), 6, "fr")
 	if err != nil {
 		t.Errorf("Could not get email template: %v", err)
 	}
@@ -48,7 +48,7 @@ func TestEmailTemplatesService_Get(t *testing.T) {
 		t.Error("Unsuccessful email template request")
 	}
 
-	expectedCurrency := pipedrive.EmailTemplate{
+	expectedCurrency := pipedrive.MailTemplate{
 		ID:                6,
 		Name:              "test",
 		Content:           "<div class=\"pipe-mailbody pipe-mailbody-a0b2609b-2627-42d8-a7e9-fe256f71cee9\">test</div>",
