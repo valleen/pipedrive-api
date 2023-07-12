@@ -41,8 +41,9 @@ type Client struct {
 	// Base URL for API requests. Defaults to the public Pipedrive API, but can be
 	// set to a domain endpoint to use. BaseURL should
 	// always be specified with a trailing slash.
-	BaseURL *url.URL
-	apiKey  string
+	BaseURL     *url.URL
+	apiKey      string
+	accessToken string
 
 	rateMutex   sync.Mutex
 	currentRate Rate
@@ -86,6 +87,7 @@ type service struct {
 
 type Config struct {
 	APIKey        string
+	AccessToken   string
 	CompanyDomain string
 }
 
@@ -131,7 +133,6 @@ func (c *Client) NewRequest(method, url string, opt interface{}, body interface{
 	}
 
 	u, err := c.createRequestUrl(url, opt)
-
 	if err != nil {
 		return nil, err
 	}
@@ -150,13 +151,16 @@ func (c *Client) NewRequest(method, url string, opt interface{}, body interface{
 	}
 
 	request, err := http.NewRequest(method, u, buf)
-
 	if err != nil {
 		return nil, err
 	}
 
 	if body != nil {
 		request.Header.Set("Content-Type", "application/json")
+	}
+
+	if c.accessToken != "" {
+		request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
 	}
 
 	return request, nil
@@ -306,9 +310,10 @@ func NewClient(options *Config) *Client {
 	baseURL, _ := url.Parse(defaultBaseUrl)
 
 	c := &Client{
-		client:  http.DefaultClient,
-		BaseURL: baseURL,
-		apiKey:  options.APIKey,
+		client:      http.DefaultClient,
+		BaseURL:     baseURL,
+		apiKey:      options.APIKey,
+		accessToken: options.AccessToken,
 	}
 
 	c.common.client = c
